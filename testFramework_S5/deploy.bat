@@ -14,7 +14,7 @@ set FRONT_SERVLET_JAR=%LIB_DIR%\FrameworkServlet.jar
 if not exist %FRONT_SERVLET_JAR% (
     echo Erreur: %FRONT_SERVLET_JAR% n'existe pas!
     echo Executez d'abord deploy-lib.bat dans le projet FrontServlet
-    pause
+    pause                           nbkuytgyik
     exit /b 1
 )
 
