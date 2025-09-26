@@ -6,14 +6,14 @@ set SRC_DIR=src\main\java
 set WEB_DIR=src\main\webapp
 set BUILD_DIR=build
 set LIB_DIR=lib
-set TOMCAT_WEBAPPS=C:\apache-tomcat-10.1.28\webapps
+set TOMCAT_WEBAPPS=C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps
 set SERVLET_API_JAR=%LIB_DIR%\servlet-api.jar
 set FRONT_SERVLET_JAR=%LIB_DIR%\FrameworkServlet.jar
 
 :: Vérifier que la librairie FrontServlet existe
 if not exist %FRONT_SERVLET_JAR% (
     echo Erreur: %FRONT_SERVLET_JAR% n'existe pas!
-    echo Executez d'abord deploy-lib.bat dans le projet FrontServlet
+    echo Executez d'abord deploy.bat dans le projet Framework_S5
     pause                          
     exit /b 1
 )
@@ -49,6 +49,11 @@ mkdir %BUILD_DIR%\WEB-INF\lib
 :: Copier les librairies
 copy /Y %LIB_DIR%\*.jar %BUILD_DIR%\WEB-INF\lib\
 
+:: NE PAS embarquer l'API Servlet: Tomcat la fournit déjà (Jakarta Servlet)
+if exist %BUILD_DIR%\WEB-INF\lib\servlet-api.jar (
+    del /f /q %BUILD_DIR%\WEB-INF\lib\servlet-api.jar
+)
+
 :: Copier TOUS les fichiers web (y compris le web.xml existant)
 if exist %WEB_DIR% (
     echo Copie des fichiers web...
@@ -63,7 +68,7 @@ cd ..
 
 :: Déploiement vers Tomcat
 echo Deploiement vers Tomcat...
-copy /Y %BUILD_DIR%\%APP_NAME%.war %TOMCAT_WEBAPPS%\
+copy /Y "%BUILD_DIR%\%APP_NAME%.war" "%TOMCAT_WEBAPPS%\"
 
 echo.
 echo Déploiement terminé avec succes!
